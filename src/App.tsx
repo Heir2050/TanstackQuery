@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {useQuery, useMutation} from "@tanstack/react-query"
+
+// useQuery is used to fetching data from the server
+//useMutation is used to mutate(to manipulate) data on the server
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const fetchPosts = async() => {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts")
+
+        if(!response.ok) throw new Error("Failed fetching Posts")
+
+        return response.json()
+    }
+
+    const {data, isLoading, error} = useQuery({
+        queryKey: ["posts"], 
+        queryFn: fetchPosts
+    })
+
+    if(isLoading) return <span className="loader"></span>
+
+    if(error) return <p className='error'>Error: {error.message}</p>
+
+    return (
+        <>
+            {data?.map((post) => (
+                <p key={post.id}>{post.title}</p>
+            ))}
+        </>
+    )
 }
 
 export default App
