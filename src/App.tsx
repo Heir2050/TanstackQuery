@@ -2,6 +2,7 @@ import './App.css'
 import Posts from './components/Posts'
 import { useState } from 'react'
 import PostsById from './components/PostsById'
+import CreatePost from './components/CreatePost'
 
 // useQuery is used to fetching data from the server
 //useMutation is used to mutate(to manipulate) data on the server
@@ -15,11 +16,13 @@ function App() {
     return(
 
         <>
-            <button onClick={() => setMounted((prev) => !prev)}>Toggle Posts</button>
+            {/* <button onClick={() => setMounted((prev) => !prev)}>Toggle Posts</button>
 
             {isMounted && <Posts />}
 
-            <PostsById id={3}/>
+            <PostsById id={3}/> */}
+
+            <CreatePost />
         </>
     )
     
